@@ -1,21 +1,26 @@
-import React from 'react'
 import { Box, Typography, Button, Card, CardMedia, CardContent, CardActions, Chip } from '@material-ui/core'
 import LocationOnIcon from '@material-ui/icons/LocationOn'
 import PhoneIcon from '@material-ui/icons/Phone'
 import Rating from '@material-ui/lab/Rating'
 
+import useStyles from './styles'
 
-const PlaceDetails = ({ place }) => {
+
+const PlaceDetails = ({ place, selected, refProp }) => {
+    if (selected) refProp?.current?.scrollIntoView({ behavior: 'smooth', block: 'start'})
+    const classes = useStyles();
+
     return (
         <Card elevation={6}>
             <CardMedia 
+                style={{ height: 350 }}
                 image={place.photo ? place.photo.images.large.url : ''}
                 title={place.name}
             />
             <CardContent>
-                <Typography>{place.name}</Typography>
-                <Box>
-                    <Rating value="Rating" />
+                <Typography gutterBottom variant="h5">{place.name}</Typography>
+                <Box display="flex" justifyContent="space-between" my={2}>
+                    <Rating name="read-only" value={Number(place.rating)} readOnly />
                     <Typography></Typography>
                 </Box>
                 <Box>

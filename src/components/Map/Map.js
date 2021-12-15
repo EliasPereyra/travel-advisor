@@ -1,4 +1,3 @@
-import React from 'react'
 import { Paper, Typography, useMediaQuery } from '@material-ui/core'
 import LocationOnOutlinedIcon from '@material-ui/icons/LocationOnOutlined'
 
