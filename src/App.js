@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { CssBaseline, Grid } from "@material-ui/core";
 
-import { getPlacesData } from "./api/travelAdvisorAPI";
+import { getPlacesData, getWeatherData } from "./api/travelAdvisorAPI";
 import Header from "./components/Header/Header";
 import List from "./components/List/List";
 import Map from "./components/Map/Map";
@@ -15,6 +15,7 @@ const App = () => {
 
   const [places, setPlaces] = useState([]);
   const [filteredPlaces, setFilteredPlaces] = useState([]);
+  const [weatherData, setWeatherData] = useState([])
 
   const [autocomplete, setAutocomplete] = useState(null);
   const [childClicked, setChildClicked] = useState(null);
@@ -37,6 +38,9 @@ const App = () => {
   useEffect(() => {
     if (bounds) {
       setIsLoading(true);
+
+      getWeatherData(coords.lat, coords.lng)
+        .then((data) => setWeatherData(data))
 
       getPlacesData(type, bounds.sw, bounds.ne).then((data) => {
         setPlaces(data.filter((place) => place.name && place.num_reviews > 0));
@@ -76,14 +80,21 @@ const App = () => {
       <Grid
         item
         xs={12}
-        md={4}
+        md={8}
         style={{
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
         }}
       >
-        <Map />
+        <Map
+          setChildClicked={setChildClicked}
+          setBounds={setBounds}
+          setCoords={setCoords}
+          coords={coords}
+          places={filteredPlaces.length ? filteredPlaces : places}
+          weatherData={weatherData}
+        />
       </Grid>
     </>
   );
